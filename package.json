@@ -1,0 +1,24 @@
+{
+  "name": "scrabble-trie",
+  "version": "1.0.0",
+  "description": "A word list storage and searching mechanism for Scrabble-like games, using the trie data structure",
+  "main": "./dist/index.js",
+  "types": "./dist/types.js",
+  "files": ["/dist"],
+  "scripts": {
+    "build": "rimraf dist && tsc",
+    "prepare": "npm run build"
+  },
+  "author": "Callum Browne <callum@callumbrowne.me>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/calbro7/scrabble-trie"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^13.13.2",
+    "rimraf": "^3.0.2",
+    "ts-node": "^8.9.0",
+    "typescript": "^3.8.3"
+  }
+}
