@@ -38,6 +38,7 @@ export class Trie {
      * @param value
      */
     public addValue(value: string): Trie {
+        // Traverse down the trie from the root, adding entries for each letter in the word if it does not already exist
         let currentNode: Trie = this;
         for (const letter of value.split('')) {
             if (!currentNode.children.has(letter)) {
@@ -57,6 +58,7 @@ export class Trie {
      * Traverse the trie back to the root to find out which word this node represents
      */
     public pathFromRoot(): string {
+        // If we are at the root node, return its value
         if (!this.parent) {
             return this.value;
         }
@@ -75,12 +77,12 @@ export class Trie {
             results.push(this.pathFromRoot());
         }
 
-        // If letters has duplicate entries, there is no need to traverse a child element more than once
-        const lettersAlreadyVisited = [];
+        // If the same letter is present in the search term multiple times, there is no need to traverse the associated child element again
+        const lettersAlreadyVisited = new Set();
 
-        // For each letter available, we visited the associated child node (if it exists) and recursively search that
+        // For each letter available, we visited the associated child node (if it exists) and recursively search that, with that letter removed from the search term
         for (const letter of letters) {
-            if (lettersAlreadyVisited.includes(letter)) {
+            if (lettersAlreadyVisited.has(letter)) {
                 continue;
             }
 
@@ -88,7 +90,7 @@ export class Trie {
                 results.push(...this.children.get(letter).search(letters.replace(letter, '')));
             }
 
-            lettersAlreadyVisited.push(letter);
+            lettersAlreadyVisited.add(letter);
         }
 
         return results;
@@ -112,8 +114,8 @@ export class Trie {
         }
 
         // We traverse each child of this node, and recursively search each. If we're searching in a node that
-        // represents one of the available letters then we use that letter (as there's no point in "wasting" a wildcard
-        // to represent a letter we do have), otherwise we use one of the wildcards
+        // represents one of the letters in the search term, we use that letter (as there's no point in "wasting" a wildcard
+        // to represent a letter we do have), otherwise we use one of the available wildcards
         for (const [letter, child] of this.children) {
             if (letters.includes(letter)) {
                 results.push(...child.search(letters.replace(letter, ''), numWildcards));
@@ -143,6 +145,19 @@ export class Trie {
     }
     set isEndOfWord(isEndOfWord: boolean) {
         this._isEndOfWord = isEndOfWord;
+    }
+
+    /**
+     * Create a trie from an array of words
+     * @param words
+     */
+    static fromWordList(words: string[]): Trie {
+        const trie = new Trie();
+        for (const word of words) {
+            trie.addValue(word);
+        }
+
+        return trie;
     }
 
     /**

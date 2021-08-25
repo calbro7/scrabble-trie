@@ -1,6 +1,6 @@
 {
   "name": "scrabble-trie",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A word list storage and searching mechanism for Scrabble-like games, using the trie data structure",
   "main": "./dist/index.js",
   "types": "./dist/types.js",
